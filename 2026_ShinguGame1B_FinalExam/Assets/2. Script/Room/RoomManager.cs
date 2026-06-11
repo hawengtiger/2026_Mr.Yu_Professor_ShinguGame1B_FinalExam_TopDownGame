@@ -13,6 +13,11 @@ public class RoomManager : MonoBehaviour
     public DoorDataSO shopRoomData;
     public DoorDataSO bossRoomData;
 
+    [Header("황금방")]
+    public GameObject pedestalPrefab;
+
+    public GameObject[] passiveItemPrefabs;
+
     [Header("설정")]
     public int roomCount = 15;
 
@@ -332,7 +337,55 @@ public class RoomManager : MonoBehaviour
             playerPos += Vector3.up * verticalOffset;
 
         player.position = playerPos;
+
+        Room enteredRoom = roomDatas[currentRoom];
+
+        if (enteredRoom.roomData.type == DoorDataSO.DoorType.Item)
+        {
+            SpawnTreasureRoomObject(currentRoom);
+        }
     }
+
+    void SpawnTreasureRoomObject(Vector2Int roomPos)
+    {
+        Room room = roomDatas[roomPos];
+
+        if (room.isTreasureSpawned)
+            return;
+
+        room.isTreasureSpawned = true;
+
+        Vector3 centerPos =
+            new Vector3(
+                roomPos.x * roomWidth,
+                roomPos.y * roomHeight,
+                0f);
+
+        // 받침대
+        if (pedestalPrefab != null)
+        {
+            Instantiate(
+                pedestalPrefab,
+                centerPos + Vector3.down * 0.1f,
+                Quaternion.identity);
+        }
+
+        // 랜덤 아이템
+        if (passiveItemPrefabs.Length > 0)
+        {
+            GameObject prefab =
+                passiveItemPrefabs[
+                    Random.Range(
+                        0,
+                        passiveItemPrefabs.Length)];
+
+            Instantiate(
+                prefab,
+                centerPos,
+                Quaternion.identity);
+        }
+    }
+
 
     void PaintDoors()
     {

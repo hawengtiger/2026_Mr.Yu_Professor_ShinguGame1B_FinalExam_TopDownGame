@@ -15,7 +15,8 @@ public class EnemyDataSo : ScriptableObject
     [Header("시간")]
     public float WaitTime = 1.2f;        // 적 시간
 
-
+    [Header("체력")]
+    public float hp = 10f; //적 체력
 
     public enum ItemType { GrayInkEnemy, RedInkEnemy, BlueInkEnemy}
 

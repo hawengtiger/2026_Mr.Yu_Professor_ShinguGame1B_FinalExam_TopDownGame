@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    public float moveSpeed;
     public Sprite[] spriteUp;
     public Sprite[] spriteDown;
     public Sprite[] spriteupLeft;
@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     public void OnMove(InputValue value)
     {
         input = value.Get<Vector2>();
-        velocity = input.normalized * moveSpeed;
+        velocity = input.normalized *  PlayerStats.Instance.moveSpeed;
 
         if (input.sqrMagnitude > 0.01f)
         {
@@ -100,11 +100,11 @@ public class PlayerController : MonoBehaviour
         sr.sprite = currentSprites[frameIndex];
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-/*        if (collision.CompareTag("Item"))
-        {
-
-        }*/
+        if (collision.collider.CompareTag("Enemy"))
+        {/*
+            PlayerStats.Instance.currentHp -= EnemyDataSo.Damage;*/
+        }
     }
 }

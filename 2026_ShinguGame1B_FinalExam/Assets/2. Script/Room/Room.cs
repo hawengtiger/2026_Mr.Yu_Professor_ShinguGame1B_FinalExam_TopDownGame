@@ -6,6 +6,8 @@ public class Room : MonoBehaviour
 
     public DoorDataSO roomData;
 
+    public bool isTreasureSpawned;
+    
     [Header("¹®")]
     public GameObject upDoor;
     public GameObject downDoor;

@@ -7,6 +7,7 @@ TagManager:
   - Door
   - WhiteAttack
   - Wall
+  - Enemy
   layers:
   - Default
   - TransparentFX
