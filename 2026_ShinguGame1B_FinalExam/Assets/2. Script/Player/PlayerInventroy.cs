@@ -23,14 +23,35 @@ public class PlayerInventory : MonoBehaviour
         RefreshUI();
     }
 
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Alpha5))
+        {
+            AddCoin(5);
+        }
+        if (Input.GetKey(KeyCode.Alpha6))
+        {
+            AddKey(5);
+        }
+    }
     public void AddCoin(int amount)
     {
+        if (coin >= 99999)
+        {
+            return; // 코인이 99999 이상이면 더 이상 증가하지 않도록
+        }
+
         coin += amount;
         RefreshUI();
     }
 
     public void AddKey(int amount)
     {
+        if (key >= 99999)
+        {
+            return; // 열쇠가 99999 이상이면 더 이상 증가하지 않도록
+        }
+
         key += amount;
         RefreshUI();
     }

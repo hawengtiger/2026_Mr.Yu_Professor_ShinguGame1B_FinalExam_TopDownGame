@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 532467463883226150}
   - component: {fileID: 567505723321700780}
   - component: {fileID: -334430326049259855}
+  - component: {fileID: 5958062096849149171}
+  - component: {fileID: 928096404327064016}
   m_Layer: 7
   m_Name: Monster_Gray
   m_TagString: Untagged
@@ -146,9 +148,6 @@ MonoBehaviour:
   rb: {fileID: -334430326049259855}
   attackSprite1: {fileID: -5398199423764791455, guid: 9830ace85dff58348bf5d89b46ddd4ec, type: 3}
   attackSprite2: {fileID: -4458919098930825702, guid: edd98dd0262565748a0f594567309b87, type: 3}
-  chargeSpeed: 1
-  chargeDuration: 1
-  waitTime: 1.5
 --- !u!50 &-334430326049259855
 Rigidbody2D:
   serializedVersion: 5
@@ -176,3 +175,33 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &5958062096849149171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7901993767239098419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1de2086470f8d3d4096eadf773d5386a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyStats
+  enemyData: {fileID: 11400000, guid: a62ac0aa5bb1af846b8e0ee2b1edd1da, type: 2}
+  currentHp: 0
+  damage: 0
+  speed: 0
+  duration: 0
+  waitTime: 0
+--- !u!114 &928096404327064016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7901993767239098419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2302d99d242682a4ab6a3ac9ddfa9155, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHit

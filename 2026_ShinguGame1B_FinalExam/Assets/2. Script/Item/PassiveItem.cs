@@ -49,8 +49,7 @@ public class PassiveItem : MonoBehaviour
         switch (itemData.passiveType)
         {
             case ItemDataSo.PassiveItemType.Ink_Hp:
-                stats.maxHp += itemData.hp;
-                stats.currentHp += itemData.hp;
+                HPUI.Instance.IncreaseHP();
                 break;
 
             case ItemDataSo.PassiveItemType.White_DMG:

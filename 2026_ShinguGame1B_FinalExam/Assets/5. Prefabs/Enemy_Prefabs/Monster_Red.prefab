@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 532467463883226150}
   - component: {fileID: 567505723321700780}
   - component: {fileID: -334430326049259855}
+  - component: {fileID: 2035022205357764614}
+  - component: {fileID: -6443019120056887590}
   m_Layer: 7
   m_Name: Monster_Red
   m_TagString: Untagged
@@ -146,9 +148,6 @@ MonoBehaviour:
   rb: {fileID: -334430326049259855}
   attackSprite1: {fileID: 608947975979245879, guid: 372602068493cf54c98954a60b765f2c, type: 3}
   attackSprite2: {fileID: -5022081423439143322, guid: e545f5ab3f1d708419789d014a44733c, type: 3}
-  chargeSpeed: 2
-  chargeDuration: 1
-  waitTime: 1
 --- !u!50 &-334430326049259855
 Rigidbody2D:
   serializedVersion: 5
@@ -176,3 +175,33 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &2035022205357764614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7901993767239098419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1de2086470f8d3d4096eadf773d5386a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyStats
+  enemyData: {fileID: 11400000, guid: 722916a83b1e2954097638ea4c691047, type: 2}
+  currentHp: 0
+  damage: 0
+  speed: 0
+  duration: 0
+  waitTime: 0
+--- !u!114 &-6443019120056887590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7901993767239098419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2302d99d242682a4ab6a3ac9ddfa9155, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHit

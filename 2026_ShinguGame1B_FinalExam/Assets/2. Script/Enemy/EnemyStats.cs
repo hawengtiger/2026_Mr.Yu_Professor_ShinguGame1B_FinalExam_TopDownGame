@@ -1,3 +1,4 @@
+using NUnit.Framework.Interfaces;
 using UnityEngine;
 
 public class EnemyStats : MonoBehaviour
@@ -34,5 +35,36 @@ public class EnemyStats : MonoBehaviour
     void Die()
     {
         Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Player"))
+        {
+            ApplyHit();
+        }
+    }
+
+    public void ApplyHit()
+    {
+        switch (enemyData.enemyType)
+        {
+            case EnemyDataSo.EnemyType.GrayInkEnemy:
+
+                HPUI.Instance.TakeDamage(enemyData.Damage);
+
+                break;
+
+            case EnemyDataSo.EnemyType.RedInkEnemy:
+
+                PlayerInventory.Instance.AddCoin(enemyData.Damage);
+
+                break;
+
+            case EnemyDataSo.EnemyType.BlueInkEnemy:    
+                PlayerInventory.Instance.AddKey(enemyData.Damage);
+
+                break;
+        }
     }
 }

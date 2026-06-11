@@ -1,17 +1,32 @@
+using TMPro;
 using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
     public static PlayerStats Instance;
 
+    public TextMeshProUGUI dmgTxT, rangeTxt, cooldownTxt, moveSpeedTxt, attackDurationTxt;
+
     public PlayerDataSO statsData;
 
     public float currentHp;
+
+    [Range(5f, 16f)]
     public float maxHp;
+
+    [Range(1f, 1000f)]
     public float damage;
+
+    [Range(0.11f, 1.1f)]
     public float range;
+
+    [Range(0.1f, 1f)]
     public float cooldown;
+
+    [Range(1f, 3f)]
     public float moveSpeed;
+
+    [Range(0.1f, 1f)]
     public float attackDuration;
 
     private void Awake()
@@ -35,5 +50,14 @@ public class PlayerStats : MonoBehaviour
         attackDuration = statsData.attackTimeRange;
 
         currentHp = maxHp;
+    }
+
+    private void Update()
+    {
+        dmgTxT.text = $"DMG: {damage}";
+        rangeTxt.text = $"RNG : {range}";
+        cooldownTxt.text = $"ACT : {cooldown}";
+        moveSpeedTxt.text = $"SPD : {moveSpeed}";
+        attackDurationTxt.text = $"ATR : {attackDuration}";
     }
 }

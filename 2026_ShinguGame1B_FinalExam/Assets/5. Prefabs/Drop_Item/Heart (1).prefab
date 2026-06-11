@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4607833318817772083}
   - component: {fileID: 8859603220123056413}
   - component: {fileID: 6594043522848776480}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Heart (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,7 +166,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &6594043522848776480
 MonoBehaviour:
   m_ObjectHideFlags: 0

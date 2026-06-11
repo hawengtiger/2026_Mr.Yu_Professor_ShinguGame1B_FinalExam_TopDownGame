@@ -24,21 +24,13 @@ public class DropItem : MonoBehaviour
         {
             case DropItemDataSO.DropItemType.Hp:
 
-                if (PlayerStats.Instance.currentHp >=
-                    PlayerStats.Instance.maxHp)
+                if (PlayerStats.Instance.currentHp >= PlayerStats.Instance.maxHp)
                 {
                     isPickedUp = false;
                     return;
                 }
 
-                PlayerStats.Instance.currentHp += itemData.ItemBuff;
-
-                PlayerStats.Instance.currentHp =
-                    Mathf.Min(
-                        PlayerStats.Instance.currentHp,
-                        PlayerStats.Instance.maxHp);
-
-                PlayerInventory.Instance.RefreshUI();
+                HPUI.Instance.Heal(itemData.ItemBuff);
 
                 Destroy(gameObject);
                 break;
