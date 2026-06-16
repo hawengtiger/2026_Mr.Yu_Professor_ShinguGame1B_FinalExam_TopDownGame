@@ -4,45 +4,84 @@ using DG.Tweening;
 
 public class SettingScreenUI : MonoBehaviour
 {
-
     [Header("설정 UI")]
-    public Image settingScreen;        //할당할 설정 UI
+    public GameObject panel;
+    public Image settingScreen;
 
+    private bool isOpen = false;
+    private bool isTweening = false;
 
     void Start()
     {
-        settingScreen.gameObject.SetActive(false);     //시작할 때 설정 UI 꺼짐
-        settingScreen.rectTransform.localScale = Vector3.one * 0.01f;  //whiteOverlay사이즈를 (0.01f, 0.01f, 0.01f)로 변환 (거의 0 크기로 축소);
+        panel.SetActive(false);
+        settingScreen.gameObject.SetActive(false);
+        settingScreen.rectTransform.localScale = Vector3.one * 0.01f;
     }
 
-    /// <summary>
-    /// === | 설정창 열림 | ===
-    /// </summary>
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isTweening)
+                return;
+
+            if (isOpen)
+                CloseSettingUI();
+            else
+                OpenSettingUI();
+        }
+    }
+
     public void OpenSettingUI()
     {
         if (settingScreen == null)
-        {
-            Debug.LogWarning("설정UI창이 할당 안됐는데 개발자! 어케된거야!");
-            return;      // 할당 안돼도 일단 빨간 버그 내지마!
-        }
+            return;
 
-        settingScreen.gameObject.SetActive(true);           //창 열림
+        if (isOpen || isTweening)
+            return;
 
-        settingScreen.rectTransform.DOScale(1, 0.2f);       // 스케일 늘림
+        isTweening = true;
+        isOpen = true;
 
+        panel.SetActive(true);
+        settingScreen.gameObject.SetActive(true);
+
+        settingScreen.rectTransform.DOKill();
+        settingScreen.rectTransform.localScale = Vector3.one * 0.01f;
+
+        settingScreen.rectTransform
+            .DOScale(1f, 0.2f)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                Time.timeScale = 0f;
+                isTweening = false;
+            });
     }
 
-    /// <summary>
-    /// === | 설정창 닫힘 | ===
-    /// </summary>
     public void CloseSettingUI()
     {
         if (settingScreen == null)
-        {
-            Debug.LogWarning("설정UI창이 할당 안됐는데 개발자! 어케된거야!");
-            return;      // 할당 안돼도 일단 빨간 버그 내지마!
-        }
+            return;
 
-        settingScreen.rectTransform.DOScale(0.01f, 0.2f).OnComplete(() => settingScreen.gameObject.SetActive(false));            //스케일 줄이고 창 닫힘
+        if (!isOpen || isTweening)
+            return;
+
+        isTweening = true;
+        isOpen = false;
+
+        Time.timeScale = 1f;
+
+        settingScreen.rectTransform.DOKill();
+
+        settingScreen.rectTransform
+            .DOScale(0.01f, 0.2f)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                settingScreen.gameObject.SetActive(false);
+                panel.SetActive(false);
+                isTweening = false;
+            });
     }
 }

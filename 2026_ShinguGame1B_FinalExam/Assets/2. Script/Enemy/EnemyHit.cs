@@ -15,5 +15,13 @@ public class EnemyHit : MonoBehaviour
             return;
 
         stats.TakeDamage(PlayerStats.Instance.damage);
+
+        HitInvincible hit =  GetComponent<HitInvincible>();
+
+        if (hit != null && !hit.CanHit())
+            return;
+
+        if (hit != null)
+            hit.Play();
     }
 }

@@ -1,4 +1,3 @@
-using NUnit.Framework.Interfaces;
 using UnityEngine;
 
 public class EnemyStats : MonoBehaviour
@@ -41,7 +40,18 @@ public class EnemyStats : MonoBehaviour
     {
         if (collision.collider.CompareTag("Player"))
         {
+            if (!collision.collider.CompareTag("Player"))
+                return;
+
+            HitInvincible invincible = collision.collider.GetComponent<HitInvincible>();
+
+            if (invincible != null && !invincible.CanHit())
+                return;
+
             ApplyHit();
+
+            if (invincible != null)
+                invincible.Play();
         }
     }
 
@@ -52,18 +62,16 @@ public class EnemyStats : MonoBehaviour
             case EnemyDataSo.EnemyType.GrayInkEnemy:
 
                 HPUI.Instance.TakeDamage(enemyData.Damage);
-
                 break;
 
             case EnemyDataSo.EnemyType.RedInkEnemy:
 
-                PlayerInventory.Instance.AddCoin(enemyData.Damage);
-
+                HPUI.Instance.TakeDamage(enemyData.Damage);
                 break;
 
             case EnemyDataSo.EnemyType.BlueInkEnemy:    
-                PlayerInventory.Instance.AddKey(enemyData.Damage);
 
+            HPUI.Instance.TakeDamage(enemyData.Damage);
                 break;
         }
     }

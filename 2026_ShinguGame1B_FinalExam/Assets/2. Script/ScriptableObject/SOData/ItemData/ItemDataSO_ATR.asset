@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69497159b6f5e8743b1593c8f97a78e8, type: 3}
   m_Name: ItemDataSO_ATR
   m_EditorClassIdentifier: Assembly-CSharp::ItemDataSo
-  ItemBuff: 1
-  dropType: 0
+  ItemPrice: 25
+  itemName: "\uC0BC\uC120\uD48D\uAE30!"
+  dialogueLines:
+  - "\uACF5\uACA9\uC2DC\uAC04 \uC99D\uAC00 +0.1 ATR\n\n\uD788\uD788. \uB098 \uAD73\uC5C8\uB2F9!"
   passiveType: 4
   hp: 1
   dmg: 2

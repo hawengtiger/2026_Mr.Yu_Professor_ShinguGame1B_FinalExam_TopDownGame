@@ -2,10 +2,39 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using TMPro;
 
 public class RoomManager : MonoBehaviour
 {
     public static RoomManager Instance;
+
+    [Header("상점 가격 UI")]
+    public TextMeshProUGUI heartPriceTMP;
+    public TextMeshProUGUI keyPriceTMP;
+    public TextMeshProUGUI passivePriceTMP;
+
+    [Header("상점")]
+    public GameObject shopHeartPrefab;
+    public GameObject shopKeyPrefab;
+    public GameObject[] shopPassivePrefabs;
+
+    public float shopItemOffsetX = 0.9f;
+    public float shopItemOffsetY = 0f;
+
+    [Header("드랍 아이템")]
+    public GameObject coinDropPrefab;
+    public GameObject hpDropPrefab;
+    public GameObject keyDropPrefab;
+
+    public int minDropCount = 1;
+    public int maxDropCount = 3;
+
+    [Header("몬스터")]
+    public GameObject[] normalEnemyPrefabs;
+    public GameObject bossEnemyPrefab;
+    public int normalEnemyCount = 3;
+
+    private List<GameObject> spawnedEnemies = new();
 
     [Header("방 데이터")]
     public DoorDataSO normalRoomData;
@@ -48,6 +77,8 @@ public class RoomManager : MonoBehaviour
     // 좌표 -> Room
     public Dictionary<Vector2Int, Room> roomDatas = new();
 
+    private int currentPassivePrice;
+
     private void Awake()
     {
         if (Instance == null)
@@ -58,10 +89,178 @@ public class RoomManager : MonoBehaviour
             GenerateDungeon();
             SpawnRooms();
             AssignSpecialRooms();
+
+            // 시작방은 항상 클리어
+            roomDatas[Vector2Int.zero].isCleared = true;
+            roomDatas[Vector2Int.zero].isEntered = true;
         }
         else
         {
             Destroy(gameObject);
+        }
+    }
+
+    private void Start()
+    {
+        HideShopPriceUI();
+    }
+
+    private void Update()
+    {
+        CheckRoomClear();
+    }
+
+    void EnterRoom(Vector2Int roomPos)
+    {
+        Room room = roomDatas[roomPos];
+
+        if (room.isCleared)
+        {
+            CreateDoors();
+            PaintDoors();
+            return;
+        }
+
+        if (room.isEntered)
+            return;
+
+        room.isEntered = true;
+
+        SpawnEnemies(room);
+    }
+
+    void SpawnEnemies(Room room)
+    {
+        CloseDoors();
+
+        spawnedEnemies.Clear();
+
+        Vector3 centerPos = new Vector3(
+            room.gridPos.x * roomWidth,
+            room.gridPos.y * roomHeight,
+            0f
+        );
+
+        // 황금방, 상점방은 잡몹 생성 금지
+        if (room.roomData.type == DoorDataSO.DoorType.Item ||
+            room.roomData.type == DoorDataSO.DoorType.Shop)
+        {
+            room.isCleared = true;
+            CreateDoors();
+            PaintDoors();
+            return;
+        }
+
+        // 보스방은 보스만 생성
+        if (room.roomData.type == DoorDataSO.DoorType.Boss)
+        {
+            if (bossEnemyPrefab != null)
+            {
+                GameObject boss =
+                    Instantiate(bossEnemyPrefab, centerPos, Quaternion.identity);
+
+                spawnedEnemies.Add(boss);
+            }
+
+            return;
+        }
+
+        // 일반방만 잡몹 생성
+        for (int i = 0; i < normalEnemyCount; i++)
+        {
+            if (normalEnemyPrefabs.Length == 0)
+                return;
+
+            GameObject enemyPrefab =
+                normalEnemyPrefabs[
+                    Random.Range(0, normalEnemyPrefabs.Length)];
+
+            Vector3 spawnPos =
+                centerPos + new Vector3(
+                    Random.Range(-1f, 1f),
+                    Random.Range(-0.5f, 0.5f),
+                    0f);
+
+            GameObject enemy =
+                Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+
+            spawnedEnemies.Add(enemy);
+        }
+    }
+
+    void CheckRoomClear()
+    {
+        if (!roomDatas.ContainsKey(currentRoom))
+            return;
+
+        Room room = roomDatas[currentRoom];
+
+        if (!room.isEntered || room.isCleared)
+            return;
+
+        spawnedEnemies.RemoveAll(enemy => enemy == null);
+
+        if (spawnedEnemies.Count <= 0)
+        {
+            room.isCleared = true;
+
+            SpawnDropItems(room);
+
+            CreateDoors();
+            PaintDoors();
+
+            Debug.Log("방 클리어!");
+        }
+    }
+
+    void SpawnDropItems(Room room)
+    {
+        int count = Random.Range(minDropCount, maxDropCount + 1);
+
+        Vector3 centerPos = new Vector3(
+            room.gridPos.x * roomWidth,
+            room.gridPos.y * roomHeight,
+            0f
+        );
+
+        for (int i = 0; i < count; i++)
+        {
+            GameObject prefab = GetRandomDrop();
+
+            if (prefab == null)
+                continue;
+
+            Vector3 offset = new Vector3(
+                Random.Range(-0.5f, 0.5f),
+                Random.Range(-0.3f, 0.3f),
+                0f
+            );
+
+            Instantiate(prefab, centerPos + offset, Quaternion.identity);
+        }
+    }
+
+    GameObject GetRandomDrop()
+    {
+        int rand = Random.Range(0, 100);
+
+        if (rand < 60)
+            return coinDropPrefab;   // 60%
+
+        if (rand < 85)
+            return hpDropPrefab;     // 25%
+
+        return keyDropPrefab;        // 15%
+    }
+
+    void CloseDoors()
+    {
+        GameObject[] doors =
+            GameObject.FindGameObjectsWithTag("Door");
+
+        foreach (GameObject door in doors)
+        {
+            door.SetActive(false);
         }
     }
 
@@ -185,6 +384,8 @@ public class RoomManager : MonoBehaviour
         }
 
         CreateDoors();
+
+
     }
 
     void CreateDoors()
@@ -238,6 +439,7 @@ public class RoomManager : MonoBehaviour
             {
                 deadEnds.Add(pos);
             }
+
         }
 
         if (deadEnds.Count < 3)
@@ -302,6 +504,8 @@ public class RoomManager : MonoBehaviour
 
     public void MoveRoom(Vector2Int dir)
     {
+        HideShopPriceUI();
+
         Vector2Int nextRoom = currentRoom + dir;
 
         // 존재하는 방인지 체크
@@ -344,7 +548,123 @@ public class RoomManager : MonoBehaviour
         {
             SpawnTreasureRoomObject(currentRoom);
         }
+
+        if (enteredRoom.roomData.type == DoorDataSO.DoorType.Shop)
+        {
+            SpawnShopItems(currentRoom);
+        }
+
+        EnterRoom(currentRoom);
     }
+    void SpawnShopItems(Vector2Int roomPos)
+    {
+        Room room = roomDatas[roomPos];
+
+        // 이미 상점 아이템은 생성돼 있으면, TMP만 다시 켜기
+        if (room.isShopSpawned)
+        {
+            ShowShopPriceUI();
+            RefreshShopPriceColor(); // 여기
+            return;
+        }
+
+        room.isShopSpawned = true;
+
+        Vector3 centerPos = new Vector3(
+            roomPos.x * roomWidth,
+            roomPos.y * roomHeight,
+            0f);
+
+        Vector3 leftPos = centerPos + Vector3.left * shopItemOffsetX;
+        Vector3 middlePos = centerPos;
+        Vector3 rightPos = centerPos + Vector3.right * shopItemOffsetX;
+
+        GameObject heart =
+            Instantiate(shopHeartPrefab, leftPos, Quaternion.identity);
+
+        GameObject key =
+            Instantiate(shopKeyPrefab, middlePos, Quaternion.identity);
+
+        GameObject passive =
+            Instantiate(
+                shopPassivePrefabs[
+                    Random.Range(0, shopPassivePrefabs.Length)],
+                rightPos,
+                Quaternion.identity);
+
+        AddShopItem(heart);
+        AddShopItem(key);
+        AddShopItem(passive);
+
+        SetupPriceTMP(heartPriceTMP, 5);
+        SetupPriceTMP(keyPriceTMP, 10);
+        SetupPriceTMP(passivePriceTMP, 25);
+
+        RefreshShopPriceColor();
+    }
+
+    void ShowShopPriceUI()
+    {
+        if (heartPriceTMP != null)
+            heartPriceTMP.gameObject.SetActive(true);
+
+        if (keyPriceTMP != null)
+            keyPriceTMP.gameObject.SetActive(true);
+
+        if (passivePriceTMP != null)
+            passivePriceTMP.gameObject.SetActive(true);
+    }
+
+    void AddShopItem(GameObject obj)
+    {
+        if (obj == null)
+            return;
+
+        if (obj.GetComponent<ShopItem>() == null)
+            obj.AddComponent<ShopItem>();
+    }
+
+    void SetupPriceTMP(TextMeshProUGUI tmp, int price)
+    {
+        if (tmp == null)
+            return;
+
+        tmp.text = price.ToString();
+        tmp.gameObject.SetActive(true);
+
+        if (PlayerInventory.Instance.coin < price)
+            tmp.color = Color.red;
+        else
+            tmp.color = Color.white;
+    }
+
+    public void RefreshShopPriceColor()
+    {
+        if (heartPriceTMP != null)
+            heartPriceTMP.color =
+                PlayerInventory.Instance.coin <  5? Color.red : Color.white;
+
+        if (keyPriceTMP != null)
+            keyPriceTMP.color =
+                PlayerInventory.Instance.coin < 10 ? Color.red : Color.white;
+
+        if (passivePriceTMP != null)
+            passivePriceTMP.color =
+                PlayerInventory.Instance.coin < 25 ? Color.red : Color.white;
+    }
+
+    void HideShopPriceUI()
+    {
+        if (heartPriceTMP != null)
+            heartPriceTMP.gameObject.SetActive(false);
+
+        if (keyPriceTMP != null)
+            keyPriceTMP.gameObject.SetActive(false);
+
+        if (passivePriceTMP != null)
+            passivePriceTMP.gameObject.SetActive(false);
+    }
+
 
     void SpawnTreasureRoomObject(Vector2Int roomPos)
     {
@@ -437,11 +757,15 @@ public class RoomManager : MonoBehaviour
         room.rightDoor.GetComponent<SpriteRenderer>().color = color;
 }
 
-    public bool CanEnterRoom(
-    Vector2Int roomPos)
+    public bool CanEnterRoom(Vector2Int roomPos)
     {
-        Room room =
-            roomDatas[roomPos];
+        if (!roomDatas.ContainsKey(roomPos))
+            return false;
+
+        Room room = roomDatas[roomPos];
+
+        if (room.isUnlocked)
+            return true;
 
         if (!room.roomData.needKey)
             return true;
@@ -452,15 +776,12 @@ public class RoomManager : MonoBehaviour
 
         if (success)
         {
-            room.roomData = normalRoomData;
-
+            room.isUnlocked = true;
             PaintDoors();
-
             return true;
         }
 
         Debug.Log("열쇠 부족");
-
         return false;
     }
 }

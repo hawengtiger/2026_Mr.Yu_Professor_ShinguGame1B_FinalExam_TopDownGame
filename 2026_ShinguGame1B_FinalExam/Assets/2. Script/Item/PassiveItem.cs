@@ -8,10 +8,20 @@ public class PassiveItem : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (GetComponent<ShopItem>() != null)
+            return;
+
         if (isPickedUp) return;
 
         if (!collision.CompareTag("Player"))
             return;
+
+        PickUp();
+    }
+
+    public void PickUp()
+    {
+        if (isPickedUp) return;
 
         PlayerStats stats = PlayerStats.Instance;
 
@@ -30,6 +40,11 @@ public class PassiveItem : MonoBehaviour
         isPickedUp = true;
 
         ApplyPassive(stats);
+
+        if (ItemGetUI.Instance != null)
+        {
+            ItemGetUI.Instance.Show(itemData);
+        }
 
         AttackController attack =
             FindFirstObjectByType<AttackController>();
@@ -53,7 +68,7 @@ public class PassiveItem : MonoBehaviour
                 break;
 
             case ItemDataSo.PassiveItemType.White_DMG:
-                stats.damage += itemData.dmg;
+                stats.damage *= itemData.dmg;
                 break;
 
             case ItemDataSo.PassiveItemType.Tape_AR:
@@ -62,8 +77,7 @@ public class PassiveItem : MonoBehaviour
 
             case ItemDataSo.PassiveItemType.Water_CT:
                 stats.cooldown -= itemData.cooltime;
-                stats.cooldown =
-                    Mathf.Max(0.1f, stats.cooldown);
+                stats.cooldown = Mathf.Max(0.1f, stats.cooldown);
                 break;
 
             case ItemDataSo.PassiveItemType.Dry_ATR:

@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a47b6edda23c7e4199748beb0ecacee, type: 3}
   m_Name: EnemyDataSo_Gray
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDataSo
-  Damage: 10
+  Damage: 1
   Speed: 1.5
   Duration: 1
   WaitTime: 1.2
-  type: 0
+  hp: 10
+  enemyType: 0

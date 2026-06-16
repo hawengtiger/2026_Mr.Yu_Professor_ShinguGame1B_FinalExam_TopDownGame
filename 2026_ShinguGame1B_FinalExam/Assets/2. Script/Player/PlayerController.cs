@@ -100,5 +100,20 @@ public class PlayerController : MonoBehaviour
         sr.sprite = currentSprites[frameIndex];
     }
 
-    
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Enemy"))
+        {
+            HitInvincible hit = GetComponent<HitInvincible>();
+
+            if (hit != null && !hit.CanHit())
+                return;
+
+            if (hit != null)
+                hit.Play();
+        }
+
+    }
+
+
 }

@@ -9,6 +9,12 @@ public class Door : MonoBehaviour
         if (!collision.collider.CompareTag("Player"))
             return;
 
+        Vector2Int targetRoom =
+            RoomManager.Instance.currentRoom + moveDirection;
+
+        if (!RoomManager.Instance.CanEnterRoom(targetRoom))
+            return;
+
         RoomManager.Instance.MoveRoom(moveDirection);
     }
 }

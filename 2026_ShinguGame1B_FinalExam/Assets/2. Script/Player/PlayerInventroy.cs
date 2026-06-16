@@ -43,6 +43,9 @@ public class PlayerInventory : MonoBehaviour
 
         coin += amount;
         RefreshUI();
+
+        if (RoomManager.Instance != null)
+            RoomManager.Instance.RefreshShopPriceColor();
     }
 
     public void AddKey(int amount)
@@ -63,6 +66,20 @@ public class PlayerInventory : MonoBehaviour
 
         key -= amount;
         RefreshUI();
+
+        return true;
+    }
+
+    public bool UseCoin(int amount)
+    {
+        if (coin < amount)
+            return false;
+
+        coin -= amount;
+        RefreshUI();
+
+        if (RoomManager.Instance != null)
+            RoomManager.Instance.RefreshShopPriceColor();
 
         return true;
     }

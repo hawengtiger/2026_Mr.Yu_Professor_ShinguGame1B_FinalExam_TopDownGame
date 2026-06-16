@@ -4,6 +4,12 @@ public class Room : MonoBehaviour
 {
     public Vector2Int gridPos;
 
+    public bool isShopSpawned;
+    public bool isUnlocked;
+
+    public bool isCleared;
+    public bool isEntered;
+
     public DoorDataSO roomData;
 
     public bool isTreasureSpawned;

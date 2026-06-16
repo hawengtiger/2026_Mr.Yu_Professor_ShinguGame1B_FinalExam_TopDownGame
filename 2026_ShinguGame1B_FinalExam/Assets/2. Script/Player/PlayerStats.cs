@@ -40,7 +40,6 @@ public class PlayerStats : MonoBehaviour
 
         // 없다면 나를 인스턴스로 등록
         Instance = this;
-        DontDestroyOnLoad(gameObject); // 씬이 넘어가도 파괴되지 않음
 
         maxHp = statsData.maxhp;
         damage = statsData.attackDMG;

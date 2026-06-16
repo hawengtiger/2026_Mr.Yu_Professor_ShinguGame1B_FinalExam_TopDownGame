@@ -6,15 +6,21 @@ public class DropItem : MonoBehaviour
 
     bool isPickedUp;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isPickedUp) return;
-
-        if (!collision.collider.CompareTag("Player"))
+        if (GetComponent<ShopItem>() != null)
             return;
 
-        isPickedUp = true;
+        if (isPickedUp) return;
 
+        if (!collision.CompareTag("Player"))
+            return;
+
+        PickUp();
+    }
+
+    public void PickUp()
+    {
         ApplyDrop();
     }
 

@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa156647f114654b9c24dd01856881a, type: 3}
   m_Name: DoorDataSO_Boss
   m_EditorClassIdentifier: Assembly-CSharp::DoorDataSO
+  roomLevel: 1
+  roomCount: 8
   color: {r: 1, g: 0, b: 0, a: 1}
   needKey: 0
-  type: 2
+  keyCost: 1
+  type: 3

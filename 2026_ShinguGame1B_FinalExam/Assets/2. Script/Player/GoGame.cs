@@ -7,10 +7,7 @@ public class GoGame : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            SceneManager.LoadScene(scene);
-        }
+
     }
 
     public void GotoGame(string map)

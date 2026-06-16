@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69497159b6f5e8743b1593c8f97a78e8, type: 3}
   m_Name: ItemDataSO_SPD
   m_EditorClassIdentifier: Assembly-CSharp::ItemDataSo
-  ItemBuff: 1
-  dropType: 0
+  ItemPrice: 25
+  itemName: "\uC2E0\uBC1C"
+  dialogueLines:
+  - "\uC774\uB3D9\uC18D\uB3C4 +0.1 SPD\n\n\uC624\uC624!! \uC218\uD30C! \uD398\uC2A4\uD2B8~!
+    \uBD80\uC2A4\uD0C0~!"
   passiveType: 5
   hp: 1
   dmg: 2

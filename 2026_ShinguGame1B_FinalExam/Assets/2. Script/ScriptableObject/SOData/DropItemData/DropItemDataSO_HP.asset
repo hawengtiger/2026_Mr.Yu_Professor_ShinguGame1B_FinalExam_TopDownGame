@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd7b9223b4e7611408cc9482b1477b3b, type: 3}
   m_Name: DropItemDataSO_HP
   m_EditorClassIdentifier: Assembly-CSharp::DropItemDataSO
+  ItemPrice: 5
   ItemBuff: 1
   dropType: 0

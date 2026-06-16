@@ -13,6 +13,11 @@ public class EnemyMoving : MonoBehaviour
     private SpriteRenderer sr;
     private EnemyStats stats;
 
+    [Header("¿¹°í¼±")]
+    public LineRenderer aimLine;
+
+    public float previewLength = 3f;
+
     void Start()
     {
         stats = GetComponent<EnemyStats>();
@@ -29,14 +34,56 @@ public class EnemyMoving : MonoBehaviour
 
     void PrepareCharge()
     {
+        Vector2 dir =
+            (player.position - transform.position).normalized;
+
+        ShowAimLine(dir);
+
         Vector3 originalScale = transform.localScale;
 
         Sequence seq = DOTween.Sequence();
 
-        seq.Append(transform.DOScale(originalScale * 1.15f, 0.15f));
-        seq.Append(transform.DOScale(originalScale, 0.1f));
+        seq.Append(
+            transform.DOScale(originalScale * 1.15f, 0.15f)
+        );
 
-        seq.OnComplete(StartCharge);
+        seq.Append(
+            transform.DOScale(originalScale, 0.1f)
+        );
+
+        seq.OnComplete(() =>
+        {
+            HideAimLine();
+            StartCharge();
+        });
+    }
+
+
+    void ShowAimLine(Vector2 dir)
+    {
+        if (aimLine == null)
+            return;
+
+        aimLine.enabled = true;
+
+        aimLine.positionCount = 2;
+
+        aimLine.SetPosition(
+            0,
+            transform.position);
+
+        aimLine.SetPosition(
+            1,
+            (Vector2)transform.position +
+            dir * previewLength);
+    }
+
+    void HideAimLine()
+    {
+        if (aimLine == null)
+            return;
+
+        aimLine.enabled = false;
     }
 
     void StartCharge()
