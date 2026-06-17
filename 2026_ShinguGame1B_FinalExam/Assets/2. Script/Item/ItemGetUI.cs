@@ -33,8 +33,8 @@ public class ItemGetUI : MonoBehaviour
 
         Sequence seq = DOTween.Sequence();
 
-        seq.Append(canvasGroup.DOFade(1f, 0.2f));
-        seq.AppendInterval(2f);
+        seq.Append(canvasGroup.DOFade(1f, 0.3f));
+        seq.AppendInterval(0.4f);
         seq.Append(canvasGroup.DOFade(0f, 0.3f));
     }
 }

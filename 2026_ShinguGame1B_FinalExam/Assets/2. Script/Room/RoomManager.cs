@@ -209,6 +209,14 @@ public class RoomManager : MonoBehaviour
             CreateDoors();
             PaintDoors();
 
+            MiniMapManager miniMap =
+    FindFirstObjectByType<MiniMapManager>();
+
+            if (miniMap != null)
+            {
+                miniMap.RefreshMiniMap();
+            }
+
             Debug.Log("방 클리어!");
         }
     }
@@ -344,17 +352,30 @@ public class RoomManager : MonoBehaviour
     }
 
 
-    Vector2Int GetRandomDirection()
+    public void RespawnShopPassive(Vector3 position)
     {
-        int rand = Random.Range(0, 4);
+        if (shopPassivePrefabs == null || shopPassivePrefabs.Length == 0)
+            return;
 
-        switch (rand)
+        GameObject prefab =
+            shopPassivePrefabs[
+                Random.Range(0, shopPassivePrefabs.Length)];
+
+        GameObject passive =
+            Instantiate(
+                prefab,
+                position,
+                Quaternion.identity);
+
+        ShopItem shopItem = AddShopItem(passive);
+
+        if (passivePriceTMP != null)
         {
-            case 0: return Vector2Int.up;
-            case 1: return Vector2Int.down;
-            case 2: return Vector2Int.left;
-            default: return Vector2Int.right;
+            passivePriceTMP.gameObject.SetActive(true);
+            passivePriceTMP.text = "25";
         }
+
+        RefreshShopPriceColor();
     }
 
     void SpawnRooms()
@@ -497,6 +518,14 @@ public class RoomManager : MonoBehaviour
 
         PaintDoors();
 
+        MiniMapManager miniMap =
+    FindFirstObjectByType<MiniMapManager>();
+
+        if (miniMap != null)
+        {
+            miniMap.CreateMiniMap();
+        }
+
         Debug.Log($"보스방 : {bossRoom}");
         Debug.Log($"상점방 : {shopRoom}");
         Debug.Log($"황금방 : {treasureRoom}");
@@ -554,8 +583,60 @@ public class RoomManager : MonoBehaviour
             SpawnShopItems(currentRoom);
         }
 
+        if (enteredRoom.roomData.type == DoorDataSO.DoorType.Boss)
+        {
+            StartBossBattle(enteredRoom);
+            return;
+        }
+
+        MiniMapManager minimap = FindFirstObjectByType<MiniMapManager>();
+
+        if (minimap != null)
+        {
+            minimap.RefreshMiniMap();
+        }
+
         EnterRoom(currentRoom);
+
+
     }
+
+    void StartBossBattle(Room room)
+    {
+        if (room.isEntered)
+            return;
+
+        room.isEntered = true;
+
+        BossIntroUI intro =
+            FindFirstObjectByType<BossIntroUI>();
+
+        Vector3 bossPos =
+            new Vector3(
+                room.gridPos.x * roomWidth,
+                room.gridPos.y * roomHeight,
+                0f);
+
+        intro.PlayBossIntro(
+            bossPos,
+            (boss) =>
+            {
+                spawnedEnemies.Clear();
+                spawnedEnemies.Add(boss);
+
+                EnemyStats bossStats =
+                    boss.GetComponent<EnemyStats>();
+
+                if (bossStats != null &&
+                    BossHPBar.Instance != null)
+                {
+                    BossHPBar.Instance.SetBoss(bossStats);
+                }
+
+                CloseDoors();
+            });
+    }
+
     void SpawnShopItems(Vector2Int roomPos)
     {
         Room room = roomDatas[roomPos];
@@ -615,13 +696,17 @@ public class RoomManager : MonoBehaviour
             passivePriceTMP.gameObject.SetActive(true);
     }
 
-    void AddShopItem(GameObject obj)
+    ShopItem AddShopItem(GameObject obj)
     {
         if (obj == null)
-            return;
+            return null;
 
-        if (obj.GetComponent<ShopItem>() == null)
-            obj.AddComponent<ShopItem>();
+        ShopItem shopItem = obj.GetComponent<ShopItem>();
+
+        if (shopItem == null)
+            shopItem = obj.AddComponent<ShopItem>();
+
+        return shopItem;
     }
 
     void SetupPriceTMP(TextMeshProUGUI tmp, int price)

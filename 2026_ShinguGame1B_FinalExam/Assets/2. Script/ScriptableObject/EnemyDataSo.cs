@@ -18,7 +18,7 @@ public class EnemyDataSo : ScriptableObject
     [Header("체력")]
     public float hp = 10f; //적 체력
 
-    public enum EnemyType { GrayInkEnemy, RedInkEnemy, BlueInkEnemy}
+    public enum EnemyType { GrayInkEnemy, RedInkEnemy, BlueInkEnemy, Boss}
 
     [Header("몬스터 타입")]
     public EnemyType enemyType;

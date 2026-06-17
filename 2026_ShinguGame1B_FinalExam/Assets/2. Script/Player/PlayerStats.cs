@@ -53,10 +53,10 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
-        dmgTxT.text = $"DMG: {damage}";
-        rangeTxt.text = $"RNG : {range}";
-        cooldownTxt.text = $"ACT : {cooldown}";
-        moveSpeedTxt.text = $"SPD : {moveSpeed}";
-        attackDurationTxt.text = $"ATR : {attackDuration}";
+        dmgTxT.text = $"DMG : {damage:F1}";
+        rangeTxt.text = $"RNG : {range:F1}";
+        cooldownTxt.text = $"ACT : {cooldown:F1}";
+        moveSpeedTxt.text = $"SPD : {moveSpeed:F1}";
+        attackDurationTxt.text = $"ATR : {attackDuration:F1}";
     }
 }

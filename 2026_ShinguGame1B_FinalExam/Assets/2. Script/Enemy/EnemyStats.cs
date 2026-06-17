@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class EnemyStats : MonoBehaviour
 {
@@ -33,6 +35,24 @@ public class EnemyStats : MonoBehaviour
 
     void Die()
     {
+        if (BossHPBar.Instance != null)
+        {
+            BossHPBar.Instance.ClearBoss();
+        }
+
+        if (enemyData.enemyType == EnemyDataSo.EnemyType.Boss)
+        {
+            SoundManager.Instance.PlaySFX("Clear");
+
+            DOVirtual.DelayedCall(2f, () =>
+            {
+                SceneManager.LoadScene("EndingScene");
+            });
+
+            Destroy(gameObject);
+            return;
+        }
+
         Destroy(gameObject);
     }
 
@@ -41,6 +61,10 @@ public class EnemyStats : MonoBehaviour
         if (collision.collider.CompareTag("Player"))
         {
             if (!collision.collider.CompareTag("Player"))
+                return;
+
+            // 보스는 접촉 데미지 없음
+            if (enemyData.enemyType == EnemyDataSo.EnemyType.Boss)
                 return;
 
             HitInvincible invincible = collision.collider.GetComponent<HitInvincible>();
@@ -60,18 +84,18 @@ public class EnemyStats : MonoBehaviour
         switch (enemyData.enemyType)
         {
             case EnemyDataSo.EnemyType.GrayInkEnemy:
-
+                SoundManager.Instance.PlaySFX("Hit");
                 HPUI.Instance.TakeDamage(enemyData.Damage);
                 break;
 
             case EnemyDataSo.EnemyType.RedInkEnemy:
-
+                SoundManager.Instance.PlaySFX("Hit");
                 HPUI.Instance.TakeDamage(enemyData.Damage);
                 break;
 
-            case EnemyDataSo.EnemyType.BlueInkEnemy:    
-
-            HPUI.Instance.TakeDamage(enemyData.Damage);
+            case EnemyDataSo.EnemyType.BlueInkEnemy:
+                SoundManager.Instance.PlaySFX("Hit");
+                HPUI.Instance.TakeDamage(enemyData.Damage);
                 break;
         }
     }

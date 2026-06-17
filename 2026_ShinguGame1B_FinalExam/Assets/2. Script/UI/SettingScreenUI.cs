@@ -40,6 +40,8 @@ public class SettingScreenUI : MonoBehaviour
         if (isOpen || isTweening)
             return;
 
+        SoundManager.Instance.PlaySFX("MainClick");
+
         isTweening = true;
         isOpen = true;
 
@@ -66,6 +68,8 @@ public class SettingScreenUI : MonoBehaviour
 
         if (!isOpen || isTweening)
             return;
+
+        SoundManager.Instance.PlaySFX("MainClick");
 
         isTweening = true;
         isOpen = false;

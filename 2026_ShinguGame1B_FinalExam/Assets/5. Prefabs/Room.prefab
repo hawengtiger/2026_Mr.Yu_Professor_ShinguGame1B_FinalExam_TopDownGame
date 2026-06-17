@@ -6518,7 +6518,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c459d5707ce6f4a44987e0945a6c12d5, type: 2}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7364,7 +7364,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Room
   gridPos: {x: 0, y: 0}
+  isShopSpawned: 0
+  isUnlocked: 0
+  isCleared: 0
+  isEntered: 0
   roomData: {fileID: 0}
+  isTreasureSpawned: 0
   upDoor: {fileID: 7231194651091321217}
   downDoor: {fileID: 4582878191576809194}
   leftDoor: {fileID: 5396302853618507502}

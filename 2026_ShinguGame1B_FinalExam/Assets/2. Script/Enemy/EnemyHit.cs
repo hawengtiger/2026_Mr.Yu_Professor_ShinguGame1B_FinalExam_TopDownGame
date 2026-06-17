@@ -14,6 +14,8 @@ public class EnemyHit : MonoBehaviour
         if (!collision.CompareTag("WhiteAttack"))
             return;
 
+        SoundManager.Instance.PlaySFX("EnemyHit");
+
         stats.TakeDamage(PlayerStats.Instance.damage);
 
         HitInvincible hit =  GetComponent<HitInvincible>();

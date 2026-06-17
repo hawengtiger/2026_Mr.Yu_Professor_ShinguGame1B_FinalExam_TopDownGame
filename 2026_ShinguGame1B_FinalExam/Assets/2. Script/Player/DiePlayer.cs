@@ -31,7 +31,12 @@ public class DiePlayer : MonoBehaviour
 
     void Die()
     {
+        if (isDead)
+            return;
+
         isDead = true;
+
+        SoundManager.Instance.PlaySFX("Die");
 
         GetComponent<PlayerController>().enabled = false;
         GetComponentInChildren<AttackController>().enabled = false;

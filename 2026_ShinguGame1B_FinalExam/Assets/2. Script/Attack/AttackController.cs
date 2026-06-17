@@ -139,6 +139,8 @@ public class AttackController : MonoBehaviour
 
     void Attack()
     {
+        SoundManager.Instance.PlaySFX("Attack");
+
         Vector2 mouse =
             Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -169,6 +171,9 @@ public class AttackController : MonoBehaviour
 
         box.tag = "WhiteAttack";
 
+        // 여기 추가
+        HitEnemies(box);
+
         SpriteRenderer sr =
             box.GetComponent<SpriteRenderer>();
 
@@ -187,6 +192,43 @@ public class AttackController : MonoBehaviour
             {
                 Destroy(box);
             });
+        }
+    }
+
+    void HitEnemies(GameObject box)
+    {
+        BoxCollider2D col =
+            box.GetComponent<BoxCollider2D>();
+
+        if (col == null)
+            return;
+
+        Collider2D[] hits =
+            Physics2D.OverlapBoxAll(
+                col.bounds.center,
+                col.bounds.size,
+                box.transform.eulerAngles.z);
+
+        foreach (Collider2D hit in hits)
+        {
+            EnemyStats enemy =
+                hit.GetComponent<EnemyStats>();
+
+            if (enemy == null)
+                continue;
+
+            HitInvincible invincible =
+                hit.GetComponent<HitInvincible>();
+
+            if (invincible != null && !invincible.CanHit())
+                continue;
+
+            SoundManager.Instance.PlaySFX("EnemyHit");
+
+            enemy.TakeDamage(PlayerStats.Instance.damage);
+
+            if (invincible != null)
+                invincible.Play();
         }
     }
 

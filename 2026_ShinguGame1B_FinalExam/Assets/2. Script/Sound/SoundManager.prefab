@@ -306,17 +306,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
   musicSounds:
   - name: main
-    clip: {fileID: 8300000, guid: 80e858f4ded4488469a7d3be65445dbf, type: 3}
-  - name: Lv1
-    clip: {fileID: 8300000, guid: d864371484800a84f82abbbfe793f688, type: 3}
-  - name: Fin
-    clip: {fileID: 8300000, guid: 06eaf99ad35549c4bb206d307936b9c1, type: 3}
+    clip: {fileID: 8300000, guid: 9d8a355789a6e6b4ebb374e5dfdf9c8b, type: 3}
   sfxSounds:
   - name: BT
-    clip: {fileID: 8300000, guid: 30ad71b185823f141a7040806ceea784, type: 3}
-  - name: Change
-    clip: {fileID: 8300000, guid: 4e3720c649cbe4c48aa084fccacf45a7, type: 3}
-  - name: Item
-    clip: {fileID: 8300000, guid: 162d48738c553f64899f4b219ac3dd6e, type: 3}
+    clip: {fileID: 8300000, guid: 039ecf7af2462ba4b94df05ffa43405c, type: 3}
+  - name: MainClick
+    clip: {fileID: 8300000, guid: 01ce0b3eabafb254f8cd5d6c60fb1cd6, type: 3}
+  - name: Start
+    clip: {fileID: 8300000, guid: 0c599ce595c64a84c84804de6dbf46d6, type: 3}
+  - name: Coin
+    clip: {fileID: 8300000, guid: c8167859359569b43b9e8b79a4a0285c, type: 3}
+  - name: Key
+    clip: {fileID: 8300000, guid: 2bfc873094adc574a9594b847311709a, type: 3}
+  - name: Passive
+    clip: {fileID: 8300000, guid: e73f42723205eb147b99994975fc9f5b, type: 3}
+  - name: Heart
+    clip: {fileID: 8300000, guid: 7b32d5dfc22917d4f8c8d1d2a59271fc, type: 3}
+  - name: Attack
+    clip: {fileID: 8300000, guid: fdc6039aa46360d4497670201ae6c3d8, type: 3}
+  - name: Hit
+    clip: {fileID: 8300000, guid: abea6fe64deb7054580e0e9159fcf431, type: 3}
+  - name: EnemyHit
+    clip: {fileID: 8300000, guid: 0bce7aeed81b0e64daaa91764069460f, type: 3}
+  - name: Die
+    clip: {fileID: 8300000, guid: e6e7a48d0128ca8428a6ab27249514a2, type: 3}
+  - name: Clear
+    clip: {fileID: 8300000, guid: d5d7e03202d67fc46a114bf8b2d13121, type: 3}
   musicSource: {fileID: 3633061369831715444}
   sfxSource: {fileID: 6436592022395909622}

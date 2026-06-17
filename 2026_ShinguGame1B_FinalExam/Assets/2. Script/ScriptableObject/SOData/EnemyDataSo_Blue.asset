@@ -15,6 +15,6 @@ MonoBehaviour:
   Damage: 1
   Speed: 1.5
   Duration: 1
-  WaitTime: 1.2
-  hp: 10
+  WaitTime: 0.3
+  hp: 8
   enemyType: 0

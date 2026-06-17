@@ -35,21 +35,21 @@ public class DropItem : MonoBehaviour
                     isPickedUp = false;
                     return;
                 }
-
+                SoundManager.Instance.PlaySFX("Heart");
                 HPUI.Instance.Heal(itemData.ItemBuff);
 
                 Destroy(gameObject);
                 break;
 
             case DropItemDataSO.DropItemType.Coin:
-
+                SoundManager.Instance.PlaySFX("Coin");
                 PlayerInventory.Instance.AddCoin(itemData.ItemBuff);
 
                 Destroy(gameObject);
                 break;
 
             case DropItemDataSO.DropItemType.Key:
-
+                SoundManager.Instance.PlaySFX("Key");
                 PlayerInventory.Instance.AddKey(itemData.ItemBuff);
 
                 Destroy(gameObject);

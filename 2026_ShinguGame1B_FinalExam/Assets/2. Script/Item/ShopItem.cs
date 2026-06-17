@@ -7,6 +7,9 @@ public class ShopItem : MonoBehaviour
 
     public TextMeshPro priceText;
 
+    private static float nextBuyTime = 0f;
+    public float buyCooldown = 1f;
+
     private void Awake()
     {
         if (priceText == null)
@@ -35,6 +38,10 @@ public class ShopItem : MonoBehaviour
         if (isBought)
             return;
 
+        if (Time.time < nextBuyTime)
+            return;
+
+
         if (!collision.CompareTag("Player"))
             return;
 
@@ -58,12 +65,18 @@ public class ShopItem : MonoBehaviour
             return;
         }
 
+        nextBuyTime = Time.time + buyCooldown;
+
         isBought = true;
 
         if (passive != null)
         {
-            RoomManager.Instance.passivePriceTMP.gameObject.SetActive(false);
+            Vector3 spawnPos = transform.position;
+
             passive.PickUp();
+
+            RoomManager.Instance.RespawnShopPassive(spawnPos);
+
             return;
         }
 
